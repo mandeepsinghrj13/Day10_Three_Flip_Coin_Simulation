@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "FLIP COIN SIMULATION PUSH ON MASTER"
