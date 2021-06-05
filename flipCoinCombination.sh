@@ -1,42 +1,51 @@
 #!/bin/bash
 echo "FLIP COIN SIMULATION PUSH ON MASTER"
-isHEAD=0
-NUMBER_OF_COIN=3
+declare -A flipStore
 
-declare -A tripletFlip
+isFlip=0
+maximum=0
+temp=0
 
-
-read -p "Enter the Number of Coin Flip : " numberOfCoinFlip
-
-function triplet()
+function totalFlip()
 {
-   for(( count=0; count<$numberOfCoinFlip; count++ ))
-   do
-      for(( countCoin=0; countCoin<$NUMBER_OF_COIN; countCoin++ ))
-      do
-         flipCoin=$(( RANDOM%2 ))
-
-         if [ $FlipCoin -eq $isHEAD ]
-         then
-            coinSide+=H
-         else
-            coinSide+=T
-         fi
+	for((index=0; index<$1; index++))
+	do
+		side=""
+		for((indexOne=0; indexOne<$2; indexOne++))
+		do
+			flipCoin=$((RANDOM%2))
+			if [ $flipCoin -eq $isFlip ]
+			then
+				side+=H
+			else
+				side+=T
+			fi
 		done
-		((tripletFlip[$coinSide]++))
-		coinSide=""
+		flipStore[$side]=$((${flipStore[$side]}+1))
 	done
-
-
-function totalTripletPercentage()
-{
-   for index in ${!doubletFlip[@]}
-   do
-      tripletFlip[$index]=$(( ({tripletFlip[$index]}*100)/numberOfCoinFlip ))
-   done
-
+	echo "Count of all combination     :${flipStore[@]}"
 }
 
-triplet
 
-totalTripletPercentage
+function totalPercentageFlip()
+{
+	for count in ${!flipStore[@]}
+	{
+		flipStore[$count]=$(( $(( ${flipStore[$count]} ))/$times*100 ))
+		temp=${flipStore[$count]}
+		if (( $(echo "$temp >= $maximum"| bc) ))
+		then
+			maximum=$temp
+			key=$count
+		fi
+	}
+}
+
+
+read -p "Enter number of times you want to flip:" times
+read -p "Enter choice 1)Singlet 2)Doublet 3)Triplet and so on:" coins
+totalFlip $times $coins
+totalPercentageFlip
+echo "All head and tail combination:${!flipStore[@]}"
+echo "percentage of all combination:${flipStore[@]}"
+echo "Max winning combination      :" $maximum "-" $key
