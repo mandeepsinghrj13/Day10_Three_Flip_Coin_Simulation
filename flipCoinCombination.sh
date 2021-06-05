@@ -1,14 +1,14 @@
 #!/bin/bash
 echo "FLIP COIN SIMULATION PUSH ON MASTER"
 isHEAD=0
-NUMBER_OF_COIN=2
+NUMBER_OF_COIN=3
 
-
-declare -A doubletFlip
+declare -A tripletFlip
 
 
 read -p "Enter the Number of Coin Flip : " numberOfCoinFlip
-function doublet()
+
+function triplet()
 {
    for(( count=0; count<$numberOfCoinFlip; count++ ))
    do
@@ -23,19 +23,20 @@ function doublet()
             coinSide+=T
          fi
 		done
-		((doubletFlip[$coinSide]++))
+		((tripletFlip[$coinSide]++))
 		coinSide=""
 	done
 
-function totalDoubletPercentage()
+
+function totalTripletPercentage()
 {
    for index in ${!doubletFlip[@]}
    do
-      doubletFlip[$index]=$(( ({doubletFlip[$index]}*100)/numberOfCoinFlip ))
+      tripletFlip[$index]=$(( ({tripletFlip[$index]}*100)/numberOfCoinFlip ))
    done
 
 }
 
+triplet
 
-doublet
-totalDoubletPercentage
+totalTripletPercentage
